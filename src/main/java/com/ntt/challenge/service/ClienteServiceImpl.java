@@ -2,6 +2,7 @@ package com.ntt.challenge.service;
 
 import com.ntt.challenge.dto.ClienteRequestDTO;
 import com.ntt.challenge.dto.ClienteResponseDTO;
+import com.ntt.challenge.dto.ClienteUpdateDTO;
 import com.ntt.challenge.model.Cliente;
 import com.ntt.challenge.model.Genero;
 import com.ntt.challenge.repository.ClienteRepository;
@@ -54,13 +55,19 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ClienteResponseDTO actualizar(UUID id, ClienteRequestDTO dto) {
-        Cliente existente = clienteRepository.findById(id)
+    public ClienteResponseDTO actualizar(UUID id, ClienteUpdateDTO dto) {
+        Cliente clienteExistente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-        clienteMapper.actualizarClienteDesdeDTO(dto, existente);
+        if (dto.contrasena() != null) clienteExistente.setContrasena(dto.contrasena());
+        if (dto.nombre() != null) clienteExistente.setNombre(dto.nombre());
+        if (dto.genero() != null) clienteExistente.setGenero(dto.genero());
+        if (dto.edad() != null) clienteExistente.setEdad(dto.edad());
+        if (dto.estado() != null) clienteExistente.setEstado(dto.estado());
+        if (dto.direccion() != null) clienteExistente.setDireccion(dto.direccion());
+        if (dto.telefono() != null) clienteExistente.setTelefono(dto.telefono());
 
-        Cliente actualizado = clienteRepository.save(existente);
+        Cliente actualizado = clienteRepository.save(clienteExistente);
         return clienteMapper.toDTO(actualizado);
     }
 

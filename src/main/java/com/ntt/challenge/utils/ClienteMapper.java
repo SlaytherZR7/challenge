@@ -16,6 +16,4 @@ public interface ClienteMapper {
     Cliente toEntity(ClienteRequestDTO dto);
 
     List<ClienteResponseDTO> toDTOList(List<Cliente> clientes);
-
-    void actualizarClienteDesdeDTO(ClienteRequestDTO dto, @MappingTarget Cliente cliente);
 }

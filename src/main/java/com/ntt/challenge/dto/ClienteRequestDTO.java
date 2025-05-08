@@ -2,12 +2,11 @@ package com.ntt.challenge.dto;
 
 import com.ntt.challenge.model.Genero;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public record ClienteRequestDTO(
         @NotBlank(message = "El código de cliente no puede estar vacío")
-        String clienteId,
+        String codigoCliente,// ClienteId -> Documento
         @NotBlank(message = "La contraseña no puede estar vacía")
         String contrasena,
         @NotBlank(message = "El nombre no puede estar vacío")

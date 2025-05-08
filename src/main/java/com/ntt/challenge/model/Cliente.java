@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Cliente extends Persona{
     @NotBlank(message = "El código de cliente no puede estar vacío")
     @Column(unique = true, nullable = false)
-    private String clienteId;
+    private String codigoCliente; // ClienteId -> Documeto
 
     @NotBlank(message = "La contraseña no puede estar vacía")
     private String contrasena;

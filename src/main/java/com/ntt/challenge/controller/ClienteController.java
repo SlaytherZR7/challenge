@@ -2,6 +2,7 @@ package com.ntt.challenge.controller;
 
 import com.ntt.challenge.dto.ClienteRequestDTO;
 import com.ntt.challenge.dto.ClienteResponseDTO;
+import com.ntt.challenge.dto.ClienteUpdateDTO;
 import com.ntt.challenge.service.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,8 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ClienteResponseDTO> actualizar(@PathVariable UUID id,
-                                                          @Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
-        ClienteResponseDTO clienteResponseDTO = clienteService.actualizar(id, clienteRequestDTO);
+                                                          @Valid @RequestBody ClienteUpdateDTO clienteUpdateDTO) {
+        ClienteResponseDTO clienteResponseDTO = clienteService.actualizar(id, clienteUpdateDTO);
         return ResponseEntity.ok(clienteResponseDTO);
     }
 

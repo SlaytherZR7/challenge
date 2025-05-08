@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public record ClienteResponseDTO(
         UUID id,
-        String clienteId,
+        String codigoCliente, // ClienteId -> Documento
         String nombre,
         Genero genero,
         Integer edad,

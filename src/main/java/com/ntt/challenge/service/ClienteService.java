@@ -2,6 +2,7 @@ package com.ntt.challenge.service;
 
 import com.ntt.challenge.dto.ClienteRequestDTO;
 import com.ntt.challenge.dto.ClienteResponseDTO;
+import com.ntt.challenge.dto.ClienteUpdateDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,7 @@ public interface ClienteService {
 
     List<ClienteResponseDTO> listar();
 
-    ClienteResponseDTO actualizar(UUID id, ClienteRequestDTO dto);
+    ClienteResponseDTO actualizar(UUID id, ClienteUpdateDTO dto);
 
     void eliminar(UUID id);
 }
