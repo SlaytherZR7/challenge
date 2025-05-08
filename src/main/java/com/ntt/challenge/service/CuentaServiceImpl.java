@@ -7,6 +7,7 @@ import com.ntt.challenge.repository.CuentaRepository;
 import com.ntt.challenge.utils.CuentaMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,22 +24,30 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     public CuentaResponseDTO crear(CuentaRequestDTO cuentaRequestDTO) {
-        Cuenta cuenta = cuentaMapper.cuentaRequestDTOToCuenta(cuentaRequestDTO);
+        Cuenta cuenta = cuentaMapper.toEntity(cuentaRequestDTO);
+
+        if (cuenta.getEstado() == null) {
+            cuenta.setEstado(true);
+        }
+        if (cuenta.getSaldoInicial() == null) {
+            cuenta.setSaldoInicial(BigDecimal.ZERO);
+        }
+
         Cuenta guardada = cuentaRepository.save(cuenta);
-        return cuentaMapper.cuentaToCuentaResponseDTO(guardada);
+        return cuentaMapper.toDTO(guardada);
     }
 
     @Override
     public CuentaResponseDTO obtener(UUID id) {
         Cuenta cuenta = cuentaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
-        return cuentaMapper.cuentaToCuentaResponseDTO(cuenta);
+        return cuentaMapper.toDTO(cuenta);
     }
 
     @Override
     public List<CuentaResponseDTO> listar() {
         List<Cuenta> cuentas = cuentaRepository.findAll();
-        return cuentaMapper.cuentasToCuentaResponseDTOs(cuentas);
+        return cuentaMapper.toDTOList(cuentas);
     }
 
     @Override
@@ -49,7 +58,7 @@ public class CuentaServiceImpl implements CuentaService {
         cuentaMapper.actualizarCuentaDesdeDTO(cuentaRequestDTO, existente);
 
         Cuenta actualizada = cuentaRepository.save(existente);
-        return cuentaMapper.cuentaToCuentaResponseDTO(actualizada);
+        return cuentaMapper.toDTO(actualizada);
     }
 
     @Override

@@ -25,10 +25,12 @@ public class Cuenta {
     @Column(nullable = false)
     private TipoCuenta tipoCuenta;
 
-    @PositiveOrZero
-    private BigDecimal saldoInicial;
+    @PositiveOrZero(message = "El saldo inicial no puede ser negativo")
+    @Column(nullable = false)
+    private BigDecimal saldoInicial = BigDecimal.ZERO;
 
-    private Boolean estado;
+    @Column(nullable = false)
+    private Boolean estado = true;
 
     @ManyToOne(optional = false)
     private Cliente cliente;
