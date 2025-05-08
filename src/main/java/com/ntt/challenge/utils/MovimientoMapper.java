@@ -15,6 +15,4 @@ public interface MovimientoMapper {
     Movimiento toEntity(MovimientoRequestDTO movimientoRequestDTO);
 
     List<MovimientoResponseDTO> toDTOList(List<Movimiento> movimientos);
-
-    void actualizarMovimientoDesdeDTO(MovimientoRequestDTO movimientoRequestDTO, @MappingTarget Movimiento movimiento);
 }
