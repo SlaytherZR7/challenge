@@ -1,12 +1,12 @@
 package com.ntt.challenge.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -26,7 +26,7 @@ public class Cuenta {
     private TipoCuenta tipoCuenta;
 
     @PositiveOrZero
-    private Double saldoInicial;
+    private BigDecimal saldoInicial;
 
     private Boolean estado;
 

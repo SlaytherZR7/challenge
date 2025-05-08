@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -26,9 +27,9 @@ public class Movimiento {
     private TipoMovimiento tipoMovimiento;
 
     @NotNull
-    private Double valor; // positivo o negativo según el tipo, se valida en lógica
+    private BigDecimal valor;
 
-    private Double saldo; // saldo de la cuenta después del movimiento
+    private BigDecimal saldo;
 
     @ManyToOne(optional = false)
     private Cuenta cuenta;

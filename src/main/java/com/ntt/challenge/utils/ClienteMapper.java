@@ -5,7 +5,6 @@ import com.ntt.challenge.dto.ClienteResponseDTO;
 import com.ntt.challenge.model.Cliente;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 

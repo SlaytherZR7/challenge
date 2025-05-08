@@ -36,7 +36,7 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<ClienteResponseDTO> actualizar(@PathVariable UUID id,
                                                           @Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
         ClienteResponseDTO clienteResponseDTO = clienteService.actualizar(id, clienteRequestDTO);
