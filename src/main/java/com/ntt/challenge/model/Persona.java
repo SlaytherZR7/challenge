@@ -19,18 +19,18 @@ public class Persona {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank
+    @NotBlank(message = "El nombre no puede estar vacío")
     @Column(nullable = false)
     private String nombre;
 
-    @NotBlank
+    @NotBlank(message = "El DNI no puede estar vacío")
     @Column(unique = true, nullable = false)
     private String dni;
 
     @Enumerated(EnumType.STRING)
     private Genero genero;
 
-    @Positive
+    @Positive(message = "La edad debe ser un número positivo")
     @Column(nullable = false)
     private Integer edad;
 
