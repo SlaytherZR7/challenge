@@ -28,12 +28,13 @@ public class Persona {
     private String dni;
 
     @Enumerated(EnumType.STRING)
-    private Genero genero;
+    private Genero genero = Genero.NO_ESPECIFICADO;
 
     @Positive(message = "La edad debe ser un número positivo")
     @Column(nullable = false)
     private Integer edad;
 
+    //Opcional
     private String telefono;
 
     private String direccion;
