@@ -14,29 +14,31 @@ import java.util.UUID;
 public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
+    private final ClienteMapper clienteMapper;
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository) {
+    public ClienteServiceImpl(ClienteRepository clienteRepository, ClienteMapper clienteMapper) {
         this.clienteRepository = clienteRepository;
+        this.clienteMapper = clienteMapper;
     }
 
     @Override
     public ClienteResponseDTO crear(ClienteRequestDTO dto) {
-        Cliente cliente = ClienteMapper.INSTANCE.clienteRequestDTOToCliente(dto);
+        Cliente cliente = clienteMapper.clienteRequestDTOToCliente(dto);
         Cliente guardado = clienteRepository.save(cliente);
-        return ClienteMapper.INSTANCE.clienteToClienteResponseDTO(guardado);
+        return clienteMapper.clienteToClienteResponseDTO(guardado);
     }
 
     @Override
     public ClienteResponseDTO obtener(UUID id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-        return ClienteMapper.INSTANCE.clienteToClienteResponseDTO(cliente);
+        return clienteMapper.clienteToClienteResponseDTO(cliente);
     }
 
     @Override
     public List<ClienteResponseDTO> listar() {
         List<Cliente> clientes = clienteRepository.findAll();
-        return ClienteMapper.INSTANCE.clientesToClienteResponseDTOs(clientes);
+        return clienteMapper.clientesToClienteResponseDTOs(clientes);
     }
 
     @Override
@@ -44,10 +46,10 @@ public class ClienteServiceImpl implements ClienteService {
         Cliente existente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-        ClienteMapper.INSTANCE.actualizarClienteDesdeDTO(dto, existente);
+        clienteMapper.actualizarClienteDesdeDTO(dto, existente);
 
         Cliente actualizado = clienteRepository.save(existente);
-        return ClienteMapper.INSTANCE.clienteToClienteResponseDTO(actualizado);
+        return clienteMapper.clienteToClienteResponseDTO(actualizado);
     }
 
     @Override

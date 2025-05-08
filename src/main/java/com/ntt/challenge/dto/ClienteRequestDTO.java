@@ -9,6 +9,7 @@ public record ClienteRequestDTO(
         Boolean estado,
         String nombre,
         Genero genero,
+        String dni,
 
         @PositiveOrZero(message = "La edad no puede ser negativa")
         Integer edad,
