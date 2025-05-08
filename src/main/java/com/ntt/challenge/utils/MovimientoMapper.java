@@ -10,11 +10,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface MovimientoMapper {
-    MovimientoResponseDTO movimientoToMovimientoResponseDTO(Movimiento movimiento);
+    MovimientoResponseDTO toDTO(Movimiento movimiento);
 
-    Movimiento movimientoRequestDTOToMovimiento(MovimientoRequestDTO movimientoRequestDTO);
+    Movimiento toEntity(MovimientoRequestDTO movimientoRequestDTO);
 
-    List<MovimientoResponseDTO> movimientoToMovimientoResponseDTOs(List<Movimiento> movimientos);
+    List<MovimientoResponseDTO> toDTOList(List<Movimiento> movimientos);
 
     void actualizarMovimientoDesdeDTO(MovimientoRequestDTO movimientoRequestDTO, @MappingTarget Movimiento movimiento);
 }
