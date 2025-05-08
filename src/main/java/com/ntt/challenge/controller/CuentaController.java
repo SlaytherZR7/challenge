@@ -2,6 +2,7 @@ package com.ntt.challenge.controller;
 
 import com.ntt.challenge.dto.CuentaRequestDTO;
 import com.ntt.challenge.dto.CuentaResponseDTO;
+import com.ntt.challenge.dto.CuentaUpdateDTO;
 import com.ntt.challenge.service.CuentaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,8 @@ public class CuentaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CuentaResponseDTO> actualizar(@PathVariable UUID id,
-                                                         @Valid @RequestBody CuentaRequestDTO cuentaRequestDTO) {
-        CuentaResponseDTO cuentaResponseDTO = cuentaService.actualizar(id, cuentaRequestDTO);
+                                                         @Valid @RequestBody CuentaUpdateDTO cuentaUpdateDTO) {
+        CuentaResponseDTO cuentaResponseDTO = cuentaService.actualizar(id, cuentaUpdateDTO);
         return ResponseEntity.ok(cuentaResponseDTO);
     }
 

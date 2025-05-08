@@ -11,13 +11,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CuentaMapper {
-    @Mapping(source = "cliente.id", target = "clienteId")
+    @Mapping(source = "cliente.id", target = "codigoCliente")
     @Mapping(source = "cliente.nombre", target = "nombreCliente")
     CuentaResponseDTO toDTO(Cuenta cuenta);
 
     Cuenta toEntity(CuentaRequestDTO cuentaRequestDTO);
 
     List<CuentaResponseDTO> toDTOList(List<Cuenta> cuentas);
-
-    void actualizarCuentaDesdeDTO(CuentaRequestDTO cuentaRequestDTO, @MappingTarget Cuenta cuenta);
 }

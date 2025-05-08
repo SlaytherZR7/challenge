@@ -2,6 +2,7 @@ package com.ntt.challenge.service;
 
 import com.ntt.challenge.dto.CuentaRequestDTO;
 import com.ntt.challenge.dto.CuentaResponseDTO;
+import com.ntt.challenge.dto.CuentaUpdateDTO;
 import com.ntt.challenge.model.Cuenta;
 import com.ntt.challenge.repository.CuentaRepository;
 import com.ntt.challenge.utils.CuentaMapper;
@@ -51,13 +52,19 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public CuentaResponseDTO actualizar(UUID id, CuentaRequestDTO cuentaRequestDTO) {
-        Cuenta existente = cuentaRepository.findById(id)
+    public CuentaResponseDTO actualizar(UUID id, CuentaUpdateDTO cuentaUpdateDTO) {
+        Cuenta cuentaExistente = cuentaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
 
-        cuentaMapper.actualizarCuentaDesdeDTO(cuentaRequestDTO, existente);
+        if (cuentaUpdateDTO.tipoCuenta() != null) {
+            cuentaExistente.setTipoCuenta(cuentaUpdateDTO.tipoCuenta());
+        }
 
-        Cuenta actualizada = cuentaRepository.save(existente);
+        if (cuentaUpdateDTO.estado() != null) {
+            cuentaExistente.setEstado(cuentaUpdateDTO.estado());
+        }
+
+        Cuenta actualizada = cuentaRepository.save(cuentaExistente);
         return cuentaMapper.toDTO(actualizada);
     }
 

@@ -2,6 +2,7 @@ package com.ntt.challenge.service;
 
 import com.ntt.challenge.dto.CuentaRequestDTO;
 import com.ntt.challenge.dto.CuentaResponseDTO;
+import com.ntt.challenge.dto.CuentaUpdateDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface CuentaService {
 
     List<CuentaResponseDTO> listar();
 
-    CuentaResponseDTO actualizar(UUID id, CuentaRequestDTO cuentaRequestDTO);
+    CuentaResponseDTO actualizar(UUID id, CuentaUpdateDTO cuentaUpdateDTO);
 
     void eliminar(UUID id);
 }
