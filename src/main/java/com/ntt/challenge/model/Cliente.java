@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Cliente extends Persona{
+    @NotBlank(message = "El código de cliente no puede estar vacío")
     @Column(unique = true, nullable = false)
     private String clienteId;
 
@@ -21,5 +22,5 @@ public class Cliente extends Persona{
 
     @NotNull
     @Column(nullable = false)
-    private Boolean estado;
+    private Boolean estado = true;
 }

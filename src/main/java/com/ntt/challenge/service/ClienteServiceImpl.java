@@ -3,6 +3,7 @@ package com.ntt.challenge.service;
 import com.ntt.challenge.dto.ClienteRequestDTO;
 import com.ntt.challenge.dto.ClienteResponseDTO;
 import com.ntt.challenge.model.Cliente;
+import com.ntt.challenge.model.Genero;
 import com.ntt.challenge.repository.ClienteRepository;
 import com.ntt.challenge.utils.ClienteMapper;
 import org.springframework.stereotype.Service;
@@ -23,22 +24,33 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteResponseDTO crear(ClienteRequestDTO dto) {
-        Cliente cliente = clienteMapper.clienteRequestDTOToCliente(dto);
+        Cliente cliente = clienteMapper.toEntity(dto);
+
+        // Valor por defecto para estado
+        if (cliente.getEstado() == null) {
+            cliente.setEstado(true);
+        }
+
+        // Valor por defecto para género
+        if (cliente.getGenero() == null) {
+            cliente.setGenero(Genero.NO_ESPECIFICADO);
+        }
+
         Cliente guardado = clienteRepository.save(cliente);
-        return clienteMapper.clienteToClienteResponseDTO(guardado);
+        return clienteMapper.toDTO(guardado);
     }
 
     @Override
     public ClienteResponseDTO obtener(UUID id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-        return clienteMapper.clienteToClienteResponseDTO(cliente);
+        return clienteMapper.toDTO(cliente);
     }
 
     @Override
     public List<ClienteResponseDTO> listar() {
         List<Cliente> clientes = clienteRepository.findAll();
-        return clienteMapper.clientesToClienteResponseDTOs(clientes);
+        return clienteMapper.toDTOList(clientes);
     }
 
     @Override
@@ -49,7 +61,7 @@ public class ClienteServiceImpl implements ClienteService {
         clienteMapper.actualizarClienteDesdeDTO(dto, existente);
 
         Cliente actualizado = clienteRepository.save(existente);
-        return clienteMapper.clienteToClienteResponseDTO(actualizado);
+        return clienteMapper.toDTO(actualizado);
     }
 
     @Override

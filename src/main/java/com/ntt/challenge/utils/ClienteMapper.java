@@ -11,11 +11,11 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ClienteMapper {
 
-    ClienteResponseDTO clienteToClienteResponseDTO(Cliente cliente);
+    ClienteResponseDTO toDTO(Cliente cliente);
 
-    Cliente clienteRequestDTOToCliente(ClienteRequestDTO dto);
+    Cliente toEntity(ClienteRequestDTO dto);
 
-    List<ClienteResponseDTO> clientesToClienteResponseDTOs(List<Cliente> clientes);
+    List<ClienteResponseDTO> toDTOList(List<Cliente> clientes);
 
     void actualizarClienteDesdeDTO(ClienteRequestDTO dto, @MappingTarget Cliente cliente);
 }

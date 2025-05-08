@@ -10,7 +10,7 @@ public record ClienteResponseDTO(
         String nombre,
         Genero genero,
         Integer edad,
-        String identificacion,
+        String dni,
         String direccion,
         String telefono,
         Boolean estado
