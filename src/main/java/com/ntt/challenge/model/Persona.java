@@ -1,6 +1,8 @@
 package com.ntt.challenge.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,12 +19,19 @@ public class Persona {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Not
+    @NotBlank
+    @Column(nullable = false)
     private String nombre;
-    private String dni;
-    //Enum
-    private String genero;
 
+    @NotBlank
+    @Column(unique = true, nullable = false)
+    private String dni;
+
+    @Enumerated(EnumType.STRING)
+    private Genero genero;
+
+    @Positive
+    @Column(nullable = false)
     private Integer edad;
 
     private String telefono;
