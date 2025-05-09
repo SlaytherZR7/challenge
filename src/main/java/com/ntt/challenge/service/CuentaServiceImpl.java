@@ -3,6 +3,8 @@ package com.ntt.challenge.service;
 import com.ntt.challenge.dto.CuentaRequestDTO;
 import com.ntt.challenge.dto.CuentaResponseDTO;
 import com.ntt.challenge.dto.CuentaUpdateDTO;
+import com.ntt.challenge.exception.ClienteNoEncontradoException;
+import com.ntt.challenge.exception.CuentaNoEncontradaException;
 import com.ntt.challenge.model.Cliente;
 import com.ntt.challenge.model.Cuenta;
 import com.ntt.challenge.repository.ClienteRepository;
@@ -39,7 +41,7 @@ public class CuentaServiceImpl implements CuentaService {
         }
 
         Cliente cliente = clienteRepository.findById(cuentaRequestDTO.clienteId())
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + cuentaRequestDTO.clienteId()));
+                .orElseThrow(() -> new ClienteNoEncontradoException("Cliente con ID " + cuentaRequestDTO.clienteId() + " no encontrado"));
 
         cuenta.setCliente(cliente);
 
@@ -50,7 +52,7 @@ public class CuentaServiceImpl implements CuentaService {
     @Override
     public CuentaResponseDTO obtener(UUID id) {
         Cuenta cuenta = cuentaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta con ID " + id + " no encontrada"));
         return cuentaMapper.toDTO(cuenta);
     }
 
@@ -63,7 +65,7 @@ public class CuentaServiceImpl implements CuentaService {
     @Override
     public CuentaResponseDTO actualizar(UUID id, CuentaUpdateDTO cuentaUpdateDTO) {
         Cuenta cuentaExistente = cuentaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta con ID " + id + " no encontrada"));
 
         if (cuentaUpdateDTO.tipoCuenta() != null) {
             cuentaExistente.setTipoCuenta(cuentaUpdateDTO.tipoCuenta());
@@ -80,7 +82,7 @@ public class CuentaServiceImpl implements CuentaService {
     @Override
     public void eliminar(UUID id) {
         if (!cuentaRepository.existsById(id)) {
-            throw new RuntimeException("Cuenta no encontrada");
+            throw new CuentaNoEncontradaException("Cuenta con ID " + id + " no encontrada");
         }
         cuentaRepository.deleteById(id);
     }

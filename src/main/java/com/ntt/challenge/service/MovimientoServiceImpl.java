@@ -2,6 +2,8 @@ package com.ntt.challenge.service;
 
 import com.ntt.challenge.dto.MovimientoRequestDTO;
 import com.ntt.challenge.dto.MovimientoResponseDTO;
+import com.ntt.challenge.exception.CuentaNoEncontradaException;
+import com.ntt.challenge.exception.MovimientoNoEncontradoException;
 import com.ntt.challenge.model.Cuenta;
 import com.ntt.challenge.model.Movimiento;
 import com.ntt.challenge.model.TipoMovimiento;
@@ -33,7 +35,7 @@ public class MovimientoServiceImpl implements MovimientoService {
     @Transactional
     public MovimientoResponseDTO crear(MovimientoRequestDTO movimientoRequestDTO) {
         Cuenta cuenta = cuentaRepository.findById(movimientoRequestDTO.cuentaId())
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta con ID " + movimientoRequestDTO.cuentaId() + " no encontrada"));
 
         BigDecimal valor = movimientoRequestDTO.valor();
         TipoMovimiento tipoMovimiento;
@@ -57,20 +59,18 @@ public class MovimientoServiceImpl implements MovimientoService {
                 ? movimientoRequestDTO.fecha()
                 : LocalDate.now();
 
-        // Crear entidad Movimiento
         Movimiento movimiento = movimientoMapper.toEntity(movimientoRequestDTO);
         movimiento.setCuenta(cuenta);
         movimiento.setSaldo(nuevoSaldo);
         movimiento.setFecha(fechaMovimiento);
         movimiento.setTipoMovimiento(tipoMovimiento);
 
-        Movimiento guardado = movimientoRepository.save(movimiento);
+        movimientoRepository.save(movimiento);
 
         // Actualizar cuenta con nuevo saldo
         cuenta.setSaldoInicial(nuevoSaldo);
         cuentaRepository.save(cuenta);
 
-        // Construir manualmente el DTO con saldoAnterior
         MovimientoResponseDTO responseDTO = new MovimientoResponseDTO();
         responseDTO.setFecha(fechaMovimiento);
         responseDTO.setCliente(cuenta.getCliente().getNombre());
@@ -87,7 +87,7 @@ public class MovimientoServiceImpl implements MovimientoService {
     @Override
     public MovimientoResponseDTO obtener(UUID id) {
         Movimiento movimiento = movimientoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Movimiento no encontrado"));
+                .orElseThrow(() -> new MovimientoNoEncontradoException("Movimiento con ID " + id + " no encontrado"));
         return movimientoMapper.toDTO(movimiento);
     }
 
@@ -105,7 +105,7 @@ public class MovimientoServiceImpl implements MovimientoService {
     @Override
     public void eliminar(UUID id) {
         if (!movimientoRepository.existsById(id)) {
-            throw new RuntimeException("Movimiento no encontrado");
+            throw new MovimientoNoEncontradoException("Movimiento con ID " + id + " no encontrado");
         }
         movimientoRepository.deleteById(id);
     }
