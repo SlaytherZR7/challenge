@@ -3,7 +3,9 @@ package com.ntt.challenge.service;
 import com.ntt.challenge.dto.MovimientoRequestDTO;
 import com.ntt.challenge.dto.MovimientoResponseDTO;
 import com.ntt.challenge.exception.CuentaNoEncontradaException;
+import com.ntt.challenge.exception.MovimientoInvalidoException;
 import com.ntt.challenge.exception.MovimientoNoEncontradoException;
+import com.ntt.challenge.exception.SaldoNoDisponibleException;
 import com.ntt.challenge.model.Cuenta;
 import com.ntt.challenge.model.Movimiento;
 import com.ntt.challenge.model.TipoMovimiento;
@@ -45,14 +47,14 @@ public class MovimientoServiceImpl implements MovimientoService {
         } else if (valor.compareTo(BigDecimal.ZERO) < 0) {
             tipoMovimiento = TipoMovimiento.RETIRO;
         } else {
-            throw new RuntimeException("El valor del movimiento no puede ser cero");
+            throw new MovimientoInvalidoException("No se puede realizar un movimiento con valor cero");
         }
 
         BigDecimal saldoAnterior = cuenta.getSaldoInicial(); // ← saldo antes del movimiento
         BigDecimal nuevoSaldo = saldoAnterior.add(valor);
 
         if (nuevoSaldo.compareTo(BigDecimal.ZERO) < 0) {
-            throw new RuntimeException("Saldo no disponible");
+            throw new SaldoNoDisponibleException("Saldo no disponible para realizar el movimiento");
         }
 
         LocalDate fechaMovimiento = movimientoRequestDTO.fecha() != null
