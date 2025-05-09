@@ -6,6 +6,7 @@ import com.ntt.challenge.dto.CuentaUpdateDTO;
 import com.ntt.challenge.service.CuentaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class CuentaController {
 
     private final CuentaService cuentaService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ResponseEntity<CuentaResponseDTO> crear(@Valid @RequestBody CuentaRequestDTO cuentaRequestDTO) {
         CuentaResponseDTO cuentaResponseDTO = cuentaService.crear(cuentaRequestDTO);

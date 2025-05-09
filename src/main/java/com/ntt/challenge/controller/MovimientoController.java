@@ -5,6 +5,7 @@ import com.ntt.challenge.dto.MovimientoResponseDTO;
 import com.ntt.challenge.service.MovimientoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ public class MovimientoController {
 
     private final MovimientoService movimientoService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ResponseEntity<MovimientoResponseDTO> crear(@Valid @RequestBody MovimientoRequestDTO movimientoRequestDTO) {
         MovimientoResponseDTO movimientoResponseDTO = movimientoService.crear(movimientoRequestDTO);

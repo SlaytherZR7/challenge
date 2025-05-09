@@ -3,6 +3,7 @@ package com.ntt.challenge.service;
 import com.ntt.challenge.dto.ClienteRequestDTO;
 import com.ntt.challenge.dto.ClienteResponseDTO;
 import com.ntt.challenge.dto.ClienteUpdateDTO;
+import com.ntt.challenge.exception.ClienteNoEncontradoException;
 import com.ntt.challenge.model.Cliente;
 import com.ntt.challenge.model.Genero;
 import com.ntt.challenge.repository.ClienteRepository;
@@ -44,7 +45,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteResponseDTO obtener(UUID id) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+                .orElseThrow(() -> new ClienteNoEncontradoException("Cliente con ID " + id + " no encontrado"));
         return clienteMapper.toDTO(cliente);
     }
 
@@ -57,7 +58,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteResponseDTO actualizar(UUID id, ClienteUpdateDTO dto) {
         Cliente clienteExistente = clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+                .orElseThrow(() -> new ClienteNoEncontradoException("Cliente con ID " + id + " no encontrado"));
 
         if (dto.contrasena() != null) clienteExistente.setContrasena(dto.contrasena());
         if (dto.nombre() != null) clienteExistente.setNombre(dto.nombre());
@@ -74,7 +75,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public void eliminar(UUID id) {
         if (!clienteRepository.existsById(id)) {
-            throw new RuntimeException("Cliente no encontrado");
+            throw new ClienteNoEncontradoException("Cliente con ID " + id + " no encontrado");
         }
         clienteRepository.deleteById(id);
     }

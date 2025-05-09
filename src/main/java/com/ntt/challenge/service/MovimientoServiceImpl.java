@@ -34,6 +34,7 @@ public class MovimientoServiceImpl implements MovimientoService {
     public MovimientoResponseDTO crear(MovimientoRequestDTO movimientoRequestDTO) {
         Cuenta cuenta = cuentaRepository.findById(movimientoRequestDTO.cuentaId())
                 .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+
         BigDecimal valor = movimientoRequestDTO.valor();
         TipoMovimiento tipoMovimiento;
 
@@ -45,23 +46,42 @@ public class MovimientoServiceImpl implements MovimientoService {
             throw new RuntimeException("El valor del movimiento no puede ser cero");
         }
 
-        BigDecimal nuevoSaldo = cuenta.getSaldoInicial().add(valor);
+        BigDecimal saldoAnterior = cuenta.getSaldoInicial(); // ← saldo antes del movimiento
+        BigDecimal nuevoSaldo = saldoAnterior.add(valor);
 
         if (nuevoSaldo.compareTo(BigDecimal.ZERO) < 0) {
             throw new RuntimeException("Saldo no disponible");
         }
 
-        LocalDate fechaMovimiento = movimientoRequestDTO.fecha() != null ? movimientoRequestDTO.fecha() : LocalDate.now();
+        LocalDate fechaMovimiento = movimientoRequestDTO.fecha() != null
+                ? movimientoRequestDTO.fecha()
+                : LocalDate.now();
 
-        cuenta.setSaldoInicial(nuevoSaldo);
-        cuentaRepository.save(cuenta);
-
+        // Crear entidad Movimiento
         Movimiento movimiento = movimientoMapper.toEntity(movimientoRequestDTO);
         movimiento.setCuenta(cuenta);
         movimiento.setSaldo(nuevoSaldo);
+        movimiento.setFecha(fechaMovimiento);
+        movimiento.setTipoMovimiento(tipoMovimiento);
 
         Movimiento guardado = movimientoRepository.save(movimiento);
-        return movimientoMapper.toDTO(guardado);
+
+        // Actualizar cuenta con nuevo saldo
+        cuenta.setSaldoInicial(nuevoSaldo);
+        cuentaRepository.save(cuenta);
+
+        // Construir manualmente el DTO con saldoAnterior
+        MovimientoResponseDTO responseDTO = new MovimientoResponseDTO();
+        responseDTO.setFecha(fechaMovimiento);
+        responseDTO.setCliente(cuenta.getCliente().getNombre());
+        responseDTO.setNumeroCuenta(cuenta.getNumeroCuenta());
+        responseDTO.setTipoCuenta(cuenta.getTipoCuenta());
+        responseDTO.setSaldoInicial(saldoAnterior); // ← saldo original antes del movimiento
+        responseDTO.setEstado(cuenta.getEstado());
+        responseDTO.setMovimiento(valor);
+        responseDTO.setSaldoDisponible(nuevoSaldo);
+
+        return responseDTO;
     }
 
     @Override

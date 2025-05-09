@@ -11,7 +11,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CuentaMapper {
-    @Mapping(source = "cliente.id", target = "codigoCliente")
     @Mapping(source = "cliente.nombre", target = "nombreCliente")
     CuentaResponseDTO toDTO(Cuenta cuenta);
 

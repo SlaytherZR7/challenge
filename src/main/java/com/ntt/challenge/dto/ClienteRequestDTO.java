@@ -1,5 +1,6 @@
 package com.ntt.challenge.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ntt.challenge.model.Genero;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;

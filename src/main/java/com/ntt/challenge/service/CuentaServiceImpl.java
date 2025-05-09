@@ -3,7 +3,9 @@ package com.ntt.challenge.service;
 import com.ntt.challenge.dto.CuentaRequestDTO;
 import com.ntt.challenge.dto.CuentaResponseDTO;
 import com.ntt.challenge.dto.CuentaUpdateDTO;
+import com.ntt.challenge.model.Cliente;
 import com.ntt.challenge.model.Cuenta;
+import com.ntt.challenge.repository.ClienteRepository;
 import com.ntt.challenge.repository.CuentaRepository;
 import com.ntt.challenge.utils.CuentaMapper;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,13 @@ import java.util.UUID;
 public class CuentaServiceImpl implements CuentaService {
 
     private final CuentaRepository cuentaRepository;
+    private final ClienteRepository clienteRepository;
     private final CuentaMapper cuentaMapper;
 
-    public CuentaServiceImpl(CuentaRepository cuentaRepository, CuentaMapper cuentaMapper) {
+    public CuentaServiceImpl(CuentaRepository cuentaRepository, CuentaMapper cuentaMapper, ClienteRepository clienteRepository) {
         this.cuentaRepository = cuentaRepository;
         this.cuentaMapper = cuentaMapper;
+        this.clienteRepository = clienteRepository;
     }
 
     @Override
@@ -33,6 +37,11 @@ public class CuentaServiceImpl implements CuentaService {
         if (cuenta.getSaldoInicial() == null) {
             cuenta.setSaldoInicial(BigDecimal.ZERO);
         }
+
+        Cliente cliente = clienteRepository.findById(cuentaRequestDTO.clienteId())
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + cuentaRequestDTO.clienteId()));
+
+        cuenta.setCliente(cliente);
 
         Cuenta guardada = cuentaRepository.save(cuenta);
         return cuentaMapper.toDTO(guardada);

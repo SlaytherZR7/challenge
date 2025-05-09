@@ -6,6 +6,7 @@ import com.ntt.challenge.dto.ClienteUpdateDTO;
 import com.ntt.challenge.service.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ClienteResponseDTO> crear(@Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
         ClienteResponseDTO clienteResponseDTO = clienteService.crear(clienteRequestDTO);
         return ResponseEntity.ok(clienteResponseDTO);

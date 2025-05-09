@@ -11,10 +11,11 @@ import java.util.UUID;
 public record CuentaRequestDTO(
         @NotBlank(message = "El número de cuenta no puede estar vacío")
         String numeroCuenta,
-        @NotBlank(message = "El tipo de cuenta no puede estar vacío")
+        @NotNull(message = "El tipo de cuenta no puede estar vacío")
         TipoCuenta tipoCuenta,
         @PositiveOrZero(message = "El saldo inicial no puede ser negativo")
         BigDecimal saldoInicial,
         Boolean estado,
+        @NotNull
         UUID clienteId // ID del cliente asociado (heredado de la clase Persona)
 ) {}

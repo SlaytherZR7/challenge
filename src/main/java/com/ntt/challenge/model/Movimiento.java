@@ -20,7 +20,7 @@ public class Movimiento {
     private UUID id;
 
     @NotNull
-    private LocalDate fecha;
+    private LocalDate fecha = LocalDate.now();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -31,6 +31,7 @@ public class Movimiento {
 
     private BigDecimal saldo;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
+    @JoinColumn(name = "cuenta_id")
     private Cuenta cuenta;
 }
