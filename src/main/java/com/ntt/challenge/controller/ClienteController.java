@@ -20,8 +20,8 @@ public class ClienteController {
 
     private final ClienteService clienteService;
 
-    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
     public ResponseEntity<ClienteResponseDTO> crear(@Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
         ClienteResponseDTO clienteResponseDTO = clienteService.crear(clienteRequestDTO);
         return ResponseEntity.ok(clienteResponseDTO);
