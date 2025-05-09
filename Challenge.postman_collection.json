@@ -1,0 +1,400 @@
+{
+	"info": {
+		"_postman_id": "926c364e-814b-4f1b-a17a-23656a18af2e",
+		"name": "Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31414222",
+		"_collection_link": "https://tic333.postman.co/workspace/TIC-Workspace~11b0c986-25e2-4ecc-8f19-662714d2342f/collection/31414222-926c364e-814b-4f1b-a17a-23656a18af2e?action=share&source=collection_link&creator=31414222"
+	},
+	"item": [
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/clientes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/clientes/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"clientes",
+								":id"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f98b5207-33d0-46fe-814e-3e0f79aa7c22"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"codigoCliente\": \"1234\",\r\n  \"contrasena\": \"1234\",\r\n  \"nombre\": \"Slayther Zamora\",\r\n  \"genero\": \"MASCULINO\",\r\n  \"dni\": \"1313693903\",\r\n  \"edad\": 22\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/clientes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Joshua Zamora\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/clientes/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"clientes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f98b5207-33d0-46fe-814e-3e0f79aa7c22"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/clientes/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"clientes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "e7e06eaa-1f38-4808-ba2c-ef1bc405c8aa"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cuentas",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/cuentas",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cuentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/cuentas/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cuentas",
+								":id"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5b945d22-2792-4444-8978-0ab9be79fb6e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"numeroCuenta\": \"123456890\",\r\n    \"tipoCuenta\": \"CORRIENTE\",\r\n    \"saldoInicial\": 0.0,\r\n    \"clienteId\": \"f98b5207-33d0-46fe-814e-3e0f79aa7c22\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/cuentas",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cuentas"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoCuenta\": \"AHORROS\",\r\n    \"estado\": false\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/cuentas/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cuentas",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "598f77c6-0754-4760-8070-642bc101e3e1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/cuentas/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cuentas",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "598f77c6-0754-4760-8070-642bc101e3e1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movimientos",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/movimientos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"movimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/movimientos/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"movimientos",
+								":id"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f930706d-963a-48c4-a96a-9f028b998cd7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cuentaId\": \"5b945d22-2792-4444-8978-0ab9be79fb6e\",\r\n    \"valor\": 500\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/movimientos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"movimientos"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/movimientos/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"movimientos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f930706d-963a-48c4-a96a-9f028b998cd7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
