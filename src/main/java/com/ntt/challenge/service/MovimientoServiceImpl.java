@@ -36,54 +36,21 @@ public class MovimientoServiceImpl implements MovimientoService {
     @Override
     @Transactional
     public MovimientoResponseDTO crear(MovimientoRequestDTO movimientoRequestDTO) {
-        Cuenta cuenta = cuentaRepository.findById(movimientoRequestDTO.cuentaId())
-                .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta con ID " + movimientoRequestDTO.cuentaId() + " no encontrada"));
+        Cuenta cuenta = obtenerCuenta(movimientoRequestDTO.cuentaId());
 
-        BigDecimal valor = movimientoRequestDTO.valor();
-        TipoMovimiento tipoMovimiento;
+        TipoMovimiento tipo = determinarTipoMovimiento(movimientoRequestDTO.valor());
+        validarMovimiento(movimientoRequestDTO.valor(), cuenta.getSaldoInicial());
 
-        if (valor.compareTo(BigDecimal.ZERO) > 0) {
-            tipoMovimiento = TipoMovimiento.DEPOSITO;
-        } else if (valor.compareTo(BigDecimal.ZERO) < 0) {
-            tipoMovimiento = TipoMovimiento.RETIRO;
-        } else {
-            throw new MovimientoInvalidoException("No se puede realizar un movimiento con valor cero");
-        }
+        BigDecimal saldoAnterior = cuenta.getSaldoInicial();
+        BigDecimal nuevoSaldo = saldoAnterior.add(movimientoRequestDTO.valor());
 
-        BigDecimal saldoAnterior = cuenta.getSaldoInicial(); // ← saldo antes del movimiento
-        BigDecimal nuevoSaldo = saldoAnterior.add(valor);
-
-        if (nuevoSaldo.compareTo(BigDecimal.ZERO) < 0) {
-            throw new SaldoNoDisponibleException("Saldo no disponible para realizar el movimiento");
-        }
-
-        LocalDate fechaMovimiento = movimientoRequestDTO.fecha() != null
-                ? movimientoRequestDTO.fecha()
-                : LocalDate.now();
-
-        Movimiento movimiento = movimientoMapper.toEntity(movimientoRequestDTO);
-        movimiento.setCuenta(cuenta);
-        movimiento.setSaldo(nuevoSaldo);
-        movimiento.setFecha(fechaMovimiento);
-        movimiento.setTipoMovimiento(tipoMovimiento);
-
+        Movimiento movimiento = construirMovimiento(movimientoRequestDTO, cuenta, tipo, nuevoSaldo);
         movimientoRepository.save(movimiento);
 
-        // Actualizar cuenta con nuevo saldo
         cuenta.setSaldoInicial(nuevoSaldo);
         cuentaRepository.save(cuenta);
 
-        MovimientoResponseDTO responseDTO = new MovimientoResponseDTO();
-        responseDTO.setFecha(fechaMovimiento);
-        responseDTO.setCliente(cuenta.getCliente().getNombre());
-        responseDTO.setNumeroCuenta(cuenta.getNumeroCuenta());
-        responseDTO.setTipoCuenta(cuenta.getTipoCuenta());
-        responseDTO.setSaldoInicial(saldoAnterior); // ← saldo original antes del movimiento
-        responseDTO.setEstado(cuenta.getEstado());
-        responseDTO.setMovimiento(valor);
-        responseDTO.setSaldoDisponible(nuevoSaldo);
-
-        return responseDTO;
+        return construirResponseDTO(movimiento, cuenta, saldoAnterior);
     }
 
     @Override
@@ -100,15 +67,56 @@ public class MovimientoServiceImpl implements MovimientoService {
     }
 
     @Override
+    @Transactional
     public MovimientoResponseDTO actualizar(UUID id, MovimientoRequestDTO movimientoRequestDTO) {
         throw new UnsupportedOperationException("Actualizar movimientos no está permitido por reglas de negocio");
     }
 
     @Override
+    @Transactional
     public void eliminar(UUID id) {
-        if (!movimientoRepository.existsById(id)) {
-            throw new MovimientoNoEncontradoException("Movimiento con ID " + id + " no encontrado");
+        Movimiento movimiento = movimientoRepository.findById(id)
+                .orElseThrow(() -> new MovimientoNoEncontradoException("Movimiento con ID " + id + " no encontrado"));
+        movimientoRepository.delete(movimiento);
+    }
+
+    private Cuenta obtenerCuenta(UUID cuentaId) {
+        return cuentaRepository.findById(cuentaId)
+                .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta con ID " + cuentaId + " no encontrada"));
+    }
+
+    private TipoMovimiento determinarTipoMovimiento(BigDecimal valor) {
+        if (valor.compareTo(BigDecimal.ZERO) > 0) return TipoMovimiento.DEPOSITO;
+        if (valor.compareTo(BigDecimal.ZERO) < 0) return TipoMovimiento.RETIRO;
+        throw new MovimientoInvalidoException("No se puede realizar un movimiento con valor cero");
+    }
+
+    private void validarMovimiento(BigDecimal valor, BigDecimal saldoActual) {
+        BigDecimal nuevoSaldo = saldoActual.add(valor);
+        if (nuevoSaldo.compareTo(BigDecimal.ZERO) < 0) {
+            throw new SaldoNoDisponibleException("Saldo no disponible para realizar el movimiento");
         }
-        movimientoRepository.deleteById(id);
+    }
+
+    private Movimiento construirMovimiento(MovimientoRequestDTO dto, Cuenta cuenta, TipoMovimiento tipo, BigDecimal nuevoSaldo) {
+        Movimiento movimiento = movimientoMapper.toEntity(dto);
+        movimiento.setCuenta(cuenta);
+        movimiento.setSaldo(nuevoSaldo);
+        movimiento.setTipoMovimiento(tipo);
+        movimiento.setFecha(dto.fecha() != null ? dto.fecha() : LocalDate.now());
+        return movimiento;
+    }
+
+    private MovimientoResponseDTO construirResponseDTO(Movimiento movimiento, Cuenta cuenta, BigDecimal saldoAnterior) {
+        MovimientoResponseDTO dto = new MovimientoResponseDTO();
+        dto.setFecha(movimiento.getFecha());
+        dto.setCliente(cuenta.getCliente().getNombre());
+        dto.setNumeroCuenta(cuenta.getNumeroCuenta());
+        dto.setTipoCuenta(cuenta.getTipoCuenta());
+        dto.setSaldoInicial(saldoAnterior);
+        dto.setEstado(cuenta.getEstado());
+        dto.setMovimiento(movimiento.getValor());
+        dto.setSaldoDisponible(movimiento.getSaldo());
+        return dto;
     }
 }
