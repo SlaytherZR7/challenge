@@ -8,6 +8,7 @@ import com.ntt.challenge.model.Cliente;
 import com.ntt.challenge.model.Genero;
 import com.ntt.challenge.repository.ClienteRepository;
 import com.ntt.challenge.utils.ClienteMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional
     public ClienteResponseDTO crear(ClienteRequestDTO dto) {
         Cliente cliente = clienteMapper.toEntity(dto);
 
@@ -56,6 +58,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional
     public ClienteResponseDTO actualizar(UUID id, ClienteUpdateDTO dto) {
         Cliente clienteExistente = clienteRepository.findById(id)
                 .orElseThrow(() -> new ClienteNoEncontradoException("Cliente con ID " + id + " no encontrado"));
@@ -66,6 +69,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional
     public void eliminar(UUID id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new ClienteNoEncontradoException("Cliente con ID " + id + " no encontrado"));

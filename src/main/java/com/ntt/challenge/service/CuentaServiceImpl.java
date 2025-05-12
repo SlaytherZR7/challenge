@@ -10,6 +10,7 @@ import com.ntt.challenge.model.Cuenta;
 import com.ntt.challenge.repository.ClienteRepository;
 import com.ntt.challenge.repository.CuentaRepository;
 import com.ntt.challenge.utils.CuentaMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,6 +31,7 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    @Transactional
     public CuentaResponseDTO crear(CuentaRequestDTO cuentaRequestDTO) {
         Cuenta cuenta = cuentaMapper.toEntity(cuentaRequestDTO);
 
@@ -63,6 +65,7 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    @Transactional
     public CuentaResponseDTO actualizar(UUID id, CuentaUpdateDTO cuentaUpdateDTO) {
         Cuenta cuentaExistente = cuentaRepository.findById(id)
                 .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta con ID " + id + " no encontrada"));
@@ -74,6 +77,7 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    @Transactional
     public void eliminar(UUID id) {
         Cuenta cuenta = cuentaRepository.findById(id)
                 .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta con ID " + id + " no encontrada"));
