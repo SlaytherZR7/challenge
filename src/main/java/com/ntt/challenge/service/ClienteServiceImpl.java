@@ -60,23 +60,16 @@ public class ClienteServiceImpl implements ClienteService {
         Cliente clienteExistente = clienteRepository.findById(id)
                 .orElseThrow(() -> new ClienteNoEncontradoException("Cliente con ID " + id + " no encontrado"));
 
-        if (dto.contrasena() != null) clienteExistente.setContrasena(dto.contrasena());
-        if (dto.nombre() != null) clienteExistente.setNombre(dto.nombre());
-        if (dto.genero() != null) clienteExistente.setGenero(dto.genero());
-        if (dto.edad() != null) clienteExistente.setEdad(dto.edad());
-        if (dto.estado() != null) clienteExistente.setEstado(dto.estado());
-        if (dto.direccion() != null) clienteExistente.setDireccion(dto.direccion());
-        if (dto.telefono() != null) clienteExistente.setTelefono(dto.telefono());
-
+        clienteMapper.updateClienteFromDto(dto, clienteExistente);
         Cliente actualizado = clienteRepository.save(clienteExistente);
         return clienteMapper.toDTO(actualizado);
     }
 
     @Override
     public void eliminar(UUID id) {
-        if (!clienteRepository.existsById(id)) {
-            throw new ClienteNoEncontradoException("Cliente con ID " + id + " no encontrado");
-        }
-        clienteRepository.deleteById(id);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ClienteNoEncontradoException("Cliente con ID " + id + " no encontrado"));
+
+        clienteRepository.delete(cliente);
     }
 }
