@@ -2,10 +2,9 @@ package com.ntt.challenge.utils;
 
 import com.ntt.challenge.dto.CuentaRequestDTO;
 import com.ntt.challenge.dto.CuentaResponseDTO;
+import com.ntt.challenge.dto.CuentaUpdateDTO;
 import com.ntt.challenge.model.Cuenta;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -17,4 +16,7 @@ public interface CuentaMapper {
     Cuenta toEntity(CuentaRequestDTO cuentaRequestDTO);
 
     List<CuentaResponseDTO> toDTOList(List<Cuenta> cuentas);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateCuentaFromDto(CuentaUpdateDTO dto, @MappingTarget Cuenta cuenta);
 }

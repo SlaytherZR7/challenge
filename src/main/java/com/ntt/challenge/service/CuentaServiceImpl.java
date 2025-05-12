@@ -67,13 +67,7 @@ public class CuentaServiceImpl implements CuentaService {
         Cuenta cuentaExistente = cuentaRepository.findById(id)
                 .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta con ID " + id + " no encontrada"));
 
-        if (cuentaUpdateDTO.tipoCuenta() != null) {
-            cuentaExistente.setTipoCuenta(cuentaUpdateDTO.tipoCuenta());
-        }
-
-        if (cuentaUpdateDTO.estado() != null) {
-            cuentaExistente.setEstado(cuentaUpdateDTO.estado());
-        }
+        cuentaMapper.updateCuentaFromDto(cuentaUpdateDTO, cuentaExistente);
 
         Cuenta actualizada = cuentaRepository.save(cuentaExistente);
         return cuentaMapper.toDTO(actualizada);
@@ -81,9 +75,9 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     public void eliminar(UUID id) {
-        if (!cuentaRepository.existsById(id)) {
-            throw new CuentaNoEncontradaException("Cuenta con ID " + id + " no encontrada");
-        }
-        cuentaRepository.deleteById(id);
+        Cuenta cuenta = cuentaRepository.findById(id)
+                .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta con ID " + id + " no encontrada"));
+
+        cuentaRepository.delete(cuenta);
     }
 }
