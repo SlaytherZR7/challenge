@@ -2,6 +2,7 @@ package com.ntt.challenge.service;
 
 import com.ntt.challenge.dto.MovimientoRequestDTO;
 import com.ntt.challenge.dto.MovimientoResponseDTO;
+import com.ntt.challenge.exception.MovimientoNoEncontradoException;
 import com.ntt.challenge.model.Cliente;
 import com.ntt.challenge.model.Cuenta;
 import com.ntt.challenge.model.Movimiento;
@@ -103,18 +104,19 @@ class MovimientoServiceImplTest {
     @Test
     void eliminar() {
         UUID id = UUID.randomUUID();
-        when(movimientoRepository.existsById(id)).thenReturn(true);
+        Movimiento movimiento = new Movimiento();
+        when(movimientoRepository.findById(id)).thenReturn(Optional.of(movimiento));
 
         movimientoService.eliminar(id);
 
-        verify(movimientoRepository, times(1)).deleteById(id);
+        verify(movimientoRepository, times(1)).delete(movimiento);
     }
 
     @Test
     void eliminar_notFound() {
         UUID id = UUID.randomUUID();
-        when(movimientoRepository.existsById(id)).thenReturn(false);
+        when(movimientoRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> movimientoService.eliminar(id));
+        assertThrows(MovimientoNoEncontradoException.class, () -> movimientoService.eliminar(id));
     }
 }

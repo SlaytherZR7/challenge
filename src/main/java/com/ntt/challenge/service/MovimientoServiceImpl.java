@@ -102,6 +102,7 @@ public class MovimientoServiceImpl implements MovimientoService {
         Movimiento movimiento = movimientoMapper.toEntity(dto);
         movimiento.setCuenta(cuenta);
         movimiento.setSaldo(nuevoSaldo);
+        movimiento.setValor(dto.valor());
         movimiento.setTipoMovimiento(tipo);
         movimiento.setFecha(dto.fecha() != null ? dto.fecha() : LocalDate.now());
         return movimiento;
