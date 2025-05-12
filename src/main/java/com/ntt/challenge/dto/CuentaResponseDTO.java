@@ -18,8 +18,8 @@ public record CuentaResponseDTO(
         BigDecimal saldoInicial,
         @Schema(description = "Estado actual de la cuenta", example = "true")
         Boolean estado,
-        @Schema(description = "ID del cliente asociado", example = "550e8400-e29b-41d4-a716-446655440000")
-        UUID clienteId, // ID del cliente asociado (heredado de la clase Persona)
+//        @Schema(description = "ID del cliente asociado", example = "550e8400-e29b-41d4-a716-446655440000")
+//        UUID clienteId, // ID del cliente asociado (heredado de la clase Persona)
         @Schema(description = "Nombre del cliente asociado", example = "Juan Pérez")
         String nombreCliente
 ) {}
